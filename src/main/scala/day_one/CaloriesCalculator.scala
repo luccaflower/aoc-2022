@@ -32,11 +32,7 @@ object MainPartTwo {
   import Calories._
   def main(args: Array[String]): Unit = {
     val lines = Source.fromFile(args(0)).mkString
-    println(parse
-      .andThen(totalCaloriesOfEach)
-      .andThen(topThree)
-      .apply(lines)
-      .sum)
+    println((parse andThen totalCaloriesOfEach andThen topThree)(lines).sum)
   }
 
 }
