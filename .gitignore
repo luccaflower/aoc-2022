@@ -20,4 +20,4 @@ metals.sbt
 metals/project/
 
 project/metals.sbt
-input.txt
+*.txt
