@@ -3,8 +3,10 @@ package supplies
 import scala.io.Source
 import scala.util.matching.Regex
 
+
 object SupplyStack {
-  def stacks(s: Seq[String]): Map[Int, List[Char]] = 
+  type Stacks = Map[Int, List[Char]]
+  def stacks(s: Seq[String]): Stacks = 
     s.map(_.grouped(4))
       .flatMap(_.map(_.charAt(1)).zipWithIndex.map{case (c,i) => (i+1 -> c)})
       .filter(_._2.isLetter)
@@ -19,17 +21,25 @@ object SupplyStack {
     val moveInput = s.reverse.takeWhile(_.startsWith("move"))
     SupplyStack(stacks(stackInput), moves(moveInput).toList.reverse)
   }
+
+  def move(stacks: Stacks, m: Move): Stacks = 
+    stacks
+      .updated(m.dst, stacks(m.src).take(m.amount).reverse.:++(stacks(m.dst)))
+      .updated(m.src, stacks(m.src).drop(m.amount))
+  def movePreserveOrder(stacks: Stacks, m: Move): Stacks =
+    stacks
+      .updated(m.dst, stacks(m.src).take(m.amount).:++(stacks(m.dst)))
+      .updated(m.src, stacks(m.src).drop(m.amount))
 }
 case class SupplyStack(val stacks: Map[Int, List[Char]], val moves: Seq[Move]) {
-  def doMoves(): SupplyStack = {
-    this.stacks.foreach(p => println(s"${p._1}: ${p._2.mkString}"))
+  import SupplyStack._
+  def doMoves(f: (Stacks, Move) => Stacks = move _): SupplyStack = {
     moves match {
       case (m :: rest) => {
-        println(s"move ${m.amount} from ${m.src} to ${m.dst}")
         SupplyStack(
-          move(m),
+          f(stacks, m),
           rest
-        ).doMoves()
+        ).doMoves(f)
       }
       case Nil => {
         this
@@ -37,10 +47,6 @@ case class SupplyStack(val stacks: Map[Int, List[Char]], val moves: Seq[Move]) {
     }
   } 
 
-  def move(m: Move): Map[Int, List[Char]] = 
-    stacks
-      .updated(m.dst, stacks(m.src).take(m.amount).reverse.:++(stacks(m.dst)))
-      .updated(m.src, stacks(m.src).drop(m.amount))
 
   def message: String = stacks
     .toSeq.sortBy(_._1)
@@ -54,5 +60,13 @@ object MainPartOne {
   def main(args: Array[String]) = {
     val input = Source.fromFile(args(0)).getLines().toSeq
     println(parse(input).doMoves().message)
+  }
+}
+
+object MainPartTwo {
+  import supplies.SupplyStack._
+  def main(args: Array[String]) = {
+    val input = Source.fromFile(args(0)).getLines().toSeq
+    println(parse(input).doMoves(movePreserveOrder _).message)
   }
 }

@@ -35,15 +35,20 @@ class SupplyStacksTest extends AnyFunSuite with Matchers {
   test("do a move") {
     val stack = parse(input.linesIterator.toSeq)
     stack.moves(0) should be(Move(1, 2, 1))
-    stack.move(stack.moves(0)) should equal(
+    move(stack.stacks, stack.moves(0)) should equal(
       Map(1 -> List('D', 'N', 'Z'), 2 -> List('C', 'M'), 3 -> List('P'))
     )
   }
 
   test("do the moves") {
-    parse(input.linesIterator.toSeq).doMoves.stacks should equal(
+    parse(input.linesIterator.toSeq).doMoves().stacks should equal(
       Map(1 -> List('C'), 2 -> List('M'), 3 -> List('Z', 'N', 'D', 'P'))
     )
+  }
+
+  test("do the moves and preserve order") {
+    parse(input.linesIterator.toSeq).doMoves(movePreserveOrder _)
+      .message should equal("MCD")
   }
 
   test("get result") {
