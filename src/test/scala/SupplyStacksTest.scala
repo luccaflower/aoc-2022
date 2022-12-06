@@ -16,10 +16,11 @@ class SupplyStacksTest extends AnyFunSuite with Matchers {
       |move 1 from 1 to 2""".stripMargin
   import supplies.SupplyStack._
   import supplies.Move
-  
+
   test("a stack is a map of towers") {
-    stacks(
-      List(input.linesIterator.toList(0))) should equal(HashMap(2 -> Seq('D')))
+    stacks(List(input.linesIterator.toList(0))) should equal(
+      HashMap(2 -> Seq('D'))
+    )
   }
 
   test("a move is 3 numbers") {
@@ -47,12 +48,16 @@ class SupplyStacksTest extends AnyFunSuite with Matchers {
   }
 
   test("do the moves and preserve order") {
-    parse(input.linesIterator.toSeq).doMoves(movePreserveOrder _)
+    parse(input.linesIterator.toSeq)
+      .doMoves(movePreserveOrder _)
       .message should equal("MCD")
   }
 
   test("get result") {
-    parse(input.linesIterator.toSeq).doMoves().stacks.map(p => p._2(0))
+    parse(input.linesIterator.toSeq)
+      .doMoves()
+      .stacks
+      .map(p => p._2(0))
       .mkString should equal("CMZ")
   }
 }

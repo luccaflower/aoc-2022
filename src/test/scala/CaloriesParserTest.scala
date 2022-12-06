@@ -6,7 +6,7 @@ class CaloriesParserTest extends AnyFunSuite with Matchers {
   test("a number is an amount of calories") {
     Calories.mostCaloriesOf(List("1000")) should equal(1000)
   }
-  
+
   test("calories on a single elf are summed up") {
     Calories.mostCaloriesOf(List("1000", "2000")) should equal(3000)
   }
@@ -22,7 +22,6 @@ class CaloriesParserTest extends AnyFunSuite with Matchers {
 
       4000
       """
-    Calories.mostCaloriesOf(
-      Calories.parse(lines)) should equal(4000)
+    Calories.mostCaloriesOf(Calories.parse(lines)) should equal(4000)
   }
 }

@@ -8,7 +8,7 @@ sealed abstract class Shape(val score: Int) {
 }
 
 object Shape {
-  def apply(s: String): Shape = 
+  def apply(s: String): Shape =
     if (s.equals("A") || s.equals("X")) Rock
     else if (s == "B" || s == "Y") Paper
     else if (s == "C" || s == "Z") Scissors
@@ -18,7 +18,7 @@ object Shape {
     override def drawsWith: Shape = Rock
     override def winsAgainst: Shape = Scissors
     override def losesTo: Shape = Paper
-  } 
+  }
   case object Paper extends Shape(2) {
     override def drawsWith: Shape = Paper
     override def winsAgainst: Shape = Rock
@@ -37,11 +37,11 @@ case class Match(val opp: Shape, val you: Shape) { self =>
   val draw = 3
 
   def score: Int = (self.opp, self.you) match {
-    case (Rock, Paper) => win + Paper.score
-    case (Paper, Scissors) => win + Scissors.score
-    case (Scissors, Rock) => win + Rock.score
+    case (Rock, Paper)                  => win + Paper.score
+    case (Paper, Scissors)              => win + Scissors.score
+    case (Scissors, Rock)               => win + Rock.score
     case (_, _) if self.opp == self.you => draw + you.score
-    case (_, _) => you.score
+    case (_, _)                         => you.score
   }
 }
 
@@ -56,11 +56,12 @@ object Match {
   }
 
   def byLetter: (Shape, String) => Shape = (_, s) => Shape.apply(s)
-  def byOpponent: (Shape, String) => Shape = (opp, s) => s match {
-    case "X" => opp.winsAgainst
-    case "Y" => opp.drawsWith
-    case "Z" => opp.losesTo
-  }
+  def byOpponent: (Shape, String) => Shape = (opp, s) =>
+    s match {
+      case "X" => opp.winsAgainst
+      case "Y" => opp.drawsWith
+      case "Z" => opp.losesTo
+    }
 
 }
 
@@ -69,8 +70,6 @@ object Parser {
   def lines(s: String): List[String] = s.split("\n").toList
   def scores(m: List[Match]): List[Int] = m.map(_.score)
 }
-
-
 
 object MainPartOne {
   import Parser._
@@ -82,7 +81,7 @@ object MainPartOne {
 }
 
 object MainPartTwo {
-  import  Parser._
+  import Parser._
   def main(args: Array[String]): Unit = {
     val input = Source.fromFile(args(0)).mkString
     val result = lines(input).map(Match.apply(_)(Match.byOpponent).score).sum

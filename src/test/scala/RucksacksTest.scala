@@ -2,7 +2,7 @@ import org.scalatest.funsuite._
 import org.scalatest.matchers.should._
 
 class RucksacksTest extends AnyFunSuite with Matchers {
-  val input = 
+  val input =
     """vJrwpWtwJgWrhcsFMMfFFhFp
       |jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL
       |PmmdzqPrVvPwwTWBwg
@@ -32,7 +32,9 @@ class RucksacksTest extends AnyFunSuite with Matchers {
       .toList(0) should equal('p')
   }
 
-  test("a rucksack has the priority of the item that appears in both compartments") {
+  test(
+    "a rucksack has the priority of the item that appears in both compartments"
+  ) {
     input.linesIterator
       .map(halvesOf(_))
       .map(inBoth(_))

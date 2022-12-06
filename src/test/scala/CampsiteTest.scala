@@ -20,7 +20,8 @@ class CampsiteTest extends AnyFunSuite with Matchers {
     input.linesIterator
       .map(sections(_))
       .map(rangesOf(_))
-      .toList(0)._1 should equal(2 to 4)
+      .toList(0)
+      ._1 should equal(2 to 4)
   }
 
   test("in an assignment pair, one might contain the other") {

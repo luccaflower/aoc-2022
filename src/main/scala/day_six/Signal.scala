@@ -7,8 +7,8 @@ object Signal {
     @tailrec
     def go(s: String, acc: Int): Int =
       if (s.take(l).distinct.length == l) acc
-      else go(s.drop(1), acc+1)
-    go(s, l)    
+      else go(s.drop(1), acc + 1)
+    go(s, l)
   }
 }
 
